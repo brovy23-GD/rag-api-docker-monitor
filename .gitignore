@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.py[cod]
+.Python
+venv/
+.env
+
+# Docker
+.dockerignore
+
+# Terraform
+*.tfstate
+*.tfstate.backup
+.terraform/
+
+# IDEs
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Secrets
+*.pem
+*.key
+secrets/
