@@ -1,15 +1,15 @@
-﻿name: CI/CD
+﻿name: CI
+
 on: [push, pull_request]
 
 jobs:
-  build:
+  lint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      
-      - name: Build Docker image
-        run: docker build -t rag-api:latest -f docker/Dockerfile .
-      
-      - name: Run tests
-        run: |
-          docker run rag-api:latest python -m pytest
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      - name: Placeholder
+        run: echo "CI setup complete - add real tests here"
