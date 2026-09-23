@@ -1,4 +1,6 @@
-﻿# RAG API, Docker and Monitoring
+![RAG API Docker Monitoring Banner](RAG%20GIT%20BANNER.png)
+
+ # RAG API, Docker and Monitoring
 
 **Python service and infrastructure learning project scaffold** by [Bobby Rovy](https://github.com/brovy23-GD) | [LinkedIn](https://www.linkedin.com/in/bobbyrovy)
 
