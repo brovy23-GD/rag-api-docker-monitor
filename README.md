@@ -1,50 +1,53 @@
-![RAG API Docker Monitoring Banner](RAG%20GIT%20BANNER.png)
+﻿![RAG API Docker Monitoring Banner](RAG%20GIT%20BANNER.png)
 
- # RAG API, Docker and Monitoring
+# RAG API, Docker and Monitoring
 
-**Python service and infrastructure learning project scaffold** by [Bobby Rovy](https://github.com/brovy23-GD) | [LinkedIn](https://www.linkedin.com/in/bobbyrovy)
+**Python service and infrastructure learning project** by [Bobby Rovy](https://github.com/brovy23-GD) | [LinkedIn](https://www.linkedin.com/in/bobbyrovy)
 
-## Project goal
+## Current status
 
-Explore how a retrieval-augmented generation API could be packaged in Docker, configured for Azure with Terraform, tested in CI, and observed with monitoring dashboards. The repository currently represents **early-stage infrastructure and application scaffolding**, not a deployed end-to-end platform.
+This repository contains a working FastAPI monitoring demonstration. The API runs locally with Docker Compose, and Prometheus scrapes its metrics. The application does not perform retrieval-augmented generation or call a language model.
 
-## What is actually in this repository?
+## Implemented features
 
-| Path | Current state |
-| --- | --- |
-| `app/main.py` | Empty; no FastAPI endpoints or RAG logic committed |
-| `app/requirements.txt` | Lists FastAPI, Uvicorn, OpenAI SDK and python-dotenv dependencies |
-| `docker/Dockerfile` | Initial Python 3.11 container definition; build path and functionality are not validated |
-| `terraform/main.tf` | Terraform/Azure provider configuration; no Azure resources defined |
-| `.github/workflows/ci.yml` | Placeholder workflow that prints a setup message; it does not build, test or deploy the application |
-| `monitoring/grafana-dashboard.json` | Empty; no dashboard or metrics integration committed |
-| `docs/runbook.md` | Empty; no verified run or deployment instructions |
+- `GET /health` returns the service status.
+- `POST /echo` accepts a JSON body with a required `text` field and returns that text.
+- `GET /metrics` exposes Prometheus request counters and latency histograms.
+- Docker Compose starts the API and Prometheus. The API has a container health check.
+- A GitHub Actions workflow installs the development dependencies and runs pytest on Python 3.11.
 
-**Current status:** No working application, container image, live monitoring, or cloud deployment is demonstrated by the checked-in files. The previous README backup describes intended capabilities, not verified completed features.
+## Run with Docker Compose
 
-## Intended architecture (not yet implemented)
+From the repository root:
 
-```mermaid
-flowchart LR
-  U[Client] --> API[FastAPI RAG service]
-  API --> RET[Retrieval and model services]
-  API --> MET[Application metrics]
-  MET --> MON[Metrics collector]
-  MON --> DASH[Monitoring dashboard]
-  API --> CONTAINER[Docker packaging]
-  IAC[Terraform] --> HOST[Cloud runtime]
-  CONTAINER --> HOST
+```powershell
+docker compose up --build -d
+docker compose ps
+
 ```
 
-## Next development milestones
+The API documentation is at http://127.0.0.1:8000/docs. Prometheus is at http://127.0.0.1:9090.
 
-1. Implement the FastAPI application and retrieval-augmented generation flow.
-2. Correct and validate the Docker build context, application startup, and dependency installation.
-3. Write meaningful unit and integration tests and replace the CI placeholder with real checks.
-4. Define the Azure resources in Terraform and document secret management.
-5. Instrument the service, configure metrics collection, and add a working Grafana dashboard.
-6. Document and capture a reproducible local demo before claiming a deployed system.
+Try the API from PowerShell:
 
-For a more developed C#/.NET portfolio project, see [Skill Builder Pro](https://github.com/brovy23-GD/Skill-Builder-Pro-).
+```powershell
+Invoke-RestMethod http://127.0.0.1:8000/health
+Invoke-RestMethod -Method Post -Uri 'http://127.0.0.1:8000/echo' -ContentType 'application/json' -Body '{"text":"Testing my Docker Monitor API"}'
+```
 
-**Contact:** [LinkedIn](https://www.linkedin.com/in/bobbyrovy)
+In Prometheus, check **Status > Targets** for the `demo-api` target. It scrapes `api:8000/metrics`. Stop the containers with `docker compose down`.
+
+## Run the tests locally
+
+Create and activate a Python 3.11 virtual environment, then run:
+
+```powershell
+python -m pip install -r requirements-dev.txt
+python -m pytest -v
+```
+
+## Repository scope
+
+`terraform/main.tf` is an initial configuration, not a tested Azure deployment. `monitoring/grafana-dashboard.json` is a placeholder, not a working dashboard. No RAG pipeline, Grafana dashboard, or Azure deployment is claimed here.
+
+For a separate working local RAG prototype, see [Azure RAG Demo](https://github.com/brovy23-GD/azure-rag-demo).
