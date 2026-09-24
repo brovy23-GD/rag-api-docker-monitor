@@ -1,15 +1,14 @@
-﻿name: CI
-
+name: API tests
 on: [push, pull_request]
-
+permissions:
+  contents: read
 jobs:
-  lint:
+  test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: Set up Python
-        uses: actions/setup-python@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Placeholder
-        run: echo "CI setup complete - add real tests here"
+      - run: pip install -r requirements-dev.txt
+      - run: pytest -q
